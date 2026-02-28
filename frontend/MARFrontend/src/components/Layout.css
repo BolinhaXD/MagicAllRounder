@@ -1,0 +1,123 @@
+/* Full-width page; sections use .section-inner for max-w-6xl */
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page-container .page {
+  min-height: 100vh;
+}
+
+/* Nav: full width bar, content constrained to max-w-6xl */
+.nav {
+  width: 100%;
+}
+
+.nav-inner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+/* Main: full width area, content at top and centered, constrained to max-w-6xl */
+.main-inner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-tab {
+  padding: 0.5rem 0.75rem;
+  color: var(--text-muted-3);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.nav-tab:hover {
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.nav-tab-active {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Footer with wave */
+.footer-wrap {
+  margin-top: auto;
+}
+
+.footer-wave-wrap {
+  overflow: hidden;
+  height: 48px;
+  line-height: 0;
+}
+
+.footer-wave {
+  display: block;
+  width: 200%;
+  height: 48px;
+  animation: waveMove 6s linear infinite;
+}
+
+.footer-wave path {
+  fill: var(--surface);
+}
+
+@keyframes waveMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+footer {
+  padding: 1rem 1.5rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+footer strong {
+  color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  .footer-wrap .footer-wave-wrap {
+    height: 40px;
+  }
+  .footer-wave {
+    height: 40px;
+  }
+  footer {
+    padding: 0.75rem 1rem;
+  }
+  footer p {
+    font-size: 0.85rem;
+  }
+}

@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import authRoutes from "./routes/auth";
+import cardsRoutes from "./routes/cards";
+import commandersRoutes from "./routes/commanders";
 
 const app = express();
 const prisma = new PrismaClient();
@@ -16,6 +18,8 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/api/cards", cardsRoutes);
+app.use("/api/commanders", commandersRoutes);
 
 app.get("/health", async (_req, res) => {
   try {

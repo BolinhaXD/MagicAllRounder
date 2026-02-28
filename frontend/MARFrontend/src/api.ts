@@ -65,3 +65,39 @@ export const auth = {
     }),
   me: () => api<{ user: User }>("/auth/me"),
 };
+
+// Scryfall card shape (subset we use)
+export type RandomCard = {
+  name: string;
+  type_line: string;
+  oracle_text?: string;
+  image_uris?: { normal: string; small: string };
+};
+
+export const cards = {
+  random: () => api<RandomCard>("/api/cards/random"),
+};
+
+export type CommanderCard = {
+  id: string;
+  name: string;
+  image_uris?: { normal: string; small: string };
+  card_faces?: Array<{ image_uris?: { normal: string; small: string } }>;
+};
+
+export type RandomCommandersBody = {
+  cmc?: number;
+  power?: number;
+  toughness?: number;
+  numberCommanders: number;
+  colors?: string[];
+  includingColors?: "exactly" | "including";
+};
+
+export const commanders = {
+  random: (body: RandomCommandersBody) =>
+    api<{ commanders: CommanderCard[] }>("/api/commanders/random", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+};

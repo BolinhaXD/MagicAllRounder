@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 import { useAuth } from "../context/AuthContext";
 import "./Pages.css";
 
@@ -26,14 +27,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page">
-      <nav className="nav">
-        <Link to="/" className="nav-brand">Magic All Rounder</Link>
-        <div className="nav-links">
-          <Link to="/signup" className="nav-link">Sign up</Link>
-        </div>
-      </nav>
-      <main className="main auth-main">
+    <Layout>
+      <div className="main-content auth-main">
         <div className="auth-card">
           <h1>Log in</h1>
           <form onSubmit={handleSubmit} className="auth-form">
@@ -68,7 +63,7 @@ export default function LoginPage() {
             Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }
