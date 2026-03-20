@@ -15,12 +15,13 @@
 
 .nav-inner {
   width: 100%;
-  max-width: 80rem;
+  max-width: 112rem;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   box-sizing: border-box;
 }
 
@@ -29,7 +30,7 @@
   width: 100%;
   max-width: 80rem;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 1rem 1.5rem 0;
   box-sizing: border-box;
   flex: 1;
   display: flex;
@@ -40,17 +41,52 @@
 }
 
 .nav-tabs {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  pointer-events: auto;
+}
+
+.nav-brand {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .nav-tabs {
+    position: static;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-top: 0.35rem;
+  }
+
+  .nav-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .nav-brand {
+    order: 1;
+  }
+
+  .nav-tabs {
+    order: 2;
+  }
 }
 
 .nav-tab {
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.95rem;
   color: var(--text-muted-3);
   text-decoration: none;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
 }
 
 .nav-tab:hover {
@@ -82,7 +118,7 @@
 }
 
 .footer-wave path {
-  fill: var(--surface);
+  fill: var(--surface-overlay);
 }
 
 @keyframes waveMove {
@@ -92,7 +128,7 @@
 
 footer {
   padding: 1rem 1.5rem;
-  background: var(--surface);
+  background: var(--surface-overlay);
   border-top: 1px solid var(--border);
   text-align: center;
 }

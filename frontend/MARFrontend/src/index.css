@@ -4,25 +4,27 @@
   font-weight: 400;
   color-scheme: dark;
 
-  /* — Palette: #1F0318 #E5F2C9 #7F534B #1E1A1D (lightened) — */
-  --bg: #351a2d;
-  --text: #E5F2C9;
-  --text-muted: rgba(229, 242, 201, 0.65);
-  --text-muted-2: rgba(229, 242, 201, 0.78);
-  --text-muted-3: rgba(229, 242, 201, 0.92);
-  --surface: #2e2a2d;
-  --surface-overlay: rgba(46, 42, 45, 0.88);
-  --surface-card: rgba(46, 42, 45, 0.8);
-  --border: rgba(229, 242, 201, 0.14);
-  --border-strong: rgba(229, 242, 201, 0.22);
-  --border-btn: rgba(229, 242, 201, 0.35);
-  --accent: #8f6159;
-  --accent-hover: #573934;
-  --accent-subtle: rgba(127, 83, 75, 0.18);
-  --error: #b85454;
-  --error-bg: rgba(127, 83, 75, 0.25);
-  --btn-bg: #2e2a2d;
-  --input-bg: rgba(53, 26, 45, 0.9);
+  /* — Same palette as before, stepped a bit lighter — */
+  --bg: #3f2644;
+  --text: #eef6d8;
+  --text-muted: rgba(238, 246, 216, 0.68);
+  --text-muted-2: rgba(238, 246, 216, 0.8);
+  --text-muted-3: rgba(238, 246, 216, 0.93);
+  --surface: #3a363a;
+  --surface-overlay: rgba(118, 104, 128, 0.94);
+  --surface-card: rgba(58, 54, 58, 0.82);
+  --border: rgba(229, 242, 201, 0.18);
+  --border-strong: rgba(229, 242, 201, 0.28);
+  --border-btn: rgba(229, 242, 201, 0.4);
+  --accent: #c9a89e;
+  --accent-hover: #e8c4b8;
+  --accent-subtle: rgba(201, 168, 158, 0.28);
+  --accent-button: #b07d72;
+  --accent-button-hover: #c99588;
+  --error: #c45c5c;
+  --error-bg: rgba(157, 115, 107, 0.22);
+  --btn-bg: #3a363a;
+  --input-bg: rgba(63, 38, 68, 0.88);
   /* — end palette — */
 
   color: var(--text);

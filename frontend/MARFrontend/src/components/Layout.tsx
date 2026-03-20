@@ -1,20 +1,17 @@
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import "../pages/Pages.css";
 import "./Layout.css";
 
 type LayoutProps = { children: React.ReactNode };
 
 export default function Layout({ children }: LayoutProps) {
-  const { user, logout } = useAuth();
-
   return (
     <div className="page-container">
       <div className="page">
         <nav className="nav">
           <div className="nav-inner">
-            <Link to="/" className="nav-brand">
-              Magic All Rounder
+            <Link to="/" className="nav-brand" aria-label="Magic All Rounder home">
+              <img src="/logo2.png" alt="Magic All Rounder" className="nav-brand-logo" />
             </Link>
             <div className="nav-tabs">
               <NavLink to="/" className={({ isActive }) => "nav-tab" + (isActive ? " nav-tab-active" : "")} end>
@@ -23,28 +20,6 @@ export default function Layout({ children }: LayoutProps) {
               <NavLink to="/randomizer" className={({ isActive }) => "nav-tab" + (isActive ? " nav-tab-active" : "")}>
                 Randomizer
               </NavLink>
-              <NavLink to="/decks" className={({ isActive }) => "nav-tab" + (isActive ? " nav-tab-active" : "")}>
-                Your Decks
-              </NavLink>
-            </div>
-            <div className="nav-links">
-              {user ? (
-                <>
-                  <span className="nav-user">{user.username ?? user.email}</span>
-                  <button type="button" onClick={logout} className="btn btn-outline">
-                    Log out
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="nav-link">
-                    Log in
-                  </Link>
-                  <Link to="/signup" className="btn btn-primary">
-                    Sign up
-                  </Link>
-                </>
-              )}
             </div>
           </div>
         </nav>

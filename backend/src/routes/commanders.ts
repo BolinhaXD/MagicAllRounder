@@ -8,12 +8,18 @@ const SCRYFALL_SEARCH =
 type ScryfallCard = {
   id: string;
   name: string;
+  oracle_text?: string;
+  layout?: string;
   cmc: number;
   power?: string;
   toughness?: string;
   colors?: string[];
+  /** Commander / deck-building colors (hybrid, MDFC backs, etc.) */
+  color_identity?: string[];
   image_uris?: { normal: string; small: string };
   card_faces?: Array<{
+    name?: string;
+    oracle_text?: string;
     power?: string;
     toughness?: string;
     colors?: string[];
@@ -78,32 +84,27 @@ function getCommandersByToughness(
   );
 }
 
-function getCommandersByIncludingColor(
-  array: ScryfallCard[],
-  colors: string[]
-): ScryfallCard[] {
-  if (!colors.length) return array;
-  return array.filter(
-    (c) =>
-      colors.every((color) => c.colors?.includes(color)) ||
-      (c.card_faces?.some((f) =>
-        colors.every((color) => f.colors?.includes(color))
-      ) ?? false)
-  );
-}
-
-function getCommandersByExactColor(
+function getCommandersByIncludingColorIdentity(
   array: ScryfallCard[],
   colors: string[]
 ): ScryfallCard[] {
   if (!colors.length) return array;
   return array.filter((c) => {
-    const cardColors =
-      c.colors ?? c.card_faces?.flatMap((f) => f.colors ?? []) ?? [];
-    const unique = [...new Set(cardColors)];
+    const id = c.color_identity ?? [];
+    return colors.every((color) => id.includes(color));
+  });
+}
+
+function getCommandersByExactColorIdentity(
+  array: ScryfallCard[],
+  colors: string[]
+): ScryfallCard[] {
+  if (!colors.length) return array;
+  const want = [...new Set(colors)].sort();
+  return array.filter((c) => {
+    const id = [...new Set(c.color_identity ?? [])].sort();
     return (
-      unique.length === colors.length &&
-      colors.every((color) => unique.includes(color))
+      id.length === want.length && want.every((col, i) => col === id[i])
     );
   });
 }
@@ -158,13 +159,29 @@ router.post("/random", async (req: Request, res: Response) => {
       body.includingColors === "including" ? "including" : "exactly";
 
     let list = await fetchAllCommanders();
+
+    const wantsColorless = selectedColors.includes("C");
+    const selectedNonColorless = selectedColors.filter((c) => c !== "C");
+
     list = getCommandersByManaValue(list, cmc);
     list = getCommandersByPower(list, power);
     list = getCommandersByToughness(list, toughness);
-    if (includingColors === "including") {
-      list = getCommandersByIncludingColor(list, selectedColors);
+
+    if (wantsColorless) {
+      // Colorless commanders have an empty `color_identity` in Scryfall.
+      if (selectedNonColorless.length > 0) {
+        // "C + other colors" doesn't make deckbuilding sense with identity,
+        // so return an empty result set.
+        list = [];
+      } else {
+        list = list.filter((c) => (c.color_identity?.length ?? 0) === 0);
+      }
     } else {
-      list = getCommandersByExactColor(list, selectedColors);
+      if (includingColors === "including") {
+        list = getCommandersByIncludingColorIdentity(list, selectedNonColorless);
+      } else {
+        list = getCommandersByExactColorIdentity(list, selectedNonColorless);
+      }
     }
 
     const commanders: ScryfallCard[] = [];
@@ -183,5 +200,17 @@ router.post("/random", async (req: Request, res: Response) => {
     });
   }
 });
+
+/** Call on server start so the first user request isn’t stuck loading the full list. */
+export async function warmCommanderCache(): Promise<void> {
+  try {
+    const list = await fetchAllCommanders();
+    console.log(
+      `[commanders] Cache ready: ${list.length} legal commanders (Scryfall list loaded).`
+    );
+  } catch (e) {
+    console.error("[commanders] Cache warmup failed:", e);
+  }
+}
 
 export default router;

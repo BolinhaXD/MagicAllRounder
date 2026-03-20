@@ -1,25 +1,17 @@
 const API_BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
 
-export type User = { id: string; username?: string | null; email: string };
-
-function getToken(): string | null {
-  return localStorage.getItem("token");
-}
-
 export async function api<T>(
   path: string,
-  options: RequestInit & { token?: string | null } = {}
+  options: RequestInit = {}
 ): Promise<T> {
-  const { token = getToken(), ...init } = options;
   const headers: HeadersInit = {
     "Content-Type": "application/json",
-    ...(init.headers as Record<string, string>),
+    ...(options.headers as Record<string, string>),
   };
-  if (token) (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
 
   let res: Response;
   try {
-    res = await fetch(`${API_BASE}${path}`, { ...init, headers });
+    res = await fetch(`${API_BASE}${path}`, { ...options, headers });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Network error";
     throw new Error(
@@ -50,22 +42,6 @@ export async function api<T>(
   return data as T;
 }
 
-export const auth = {
-  register: (username: string, email: string, password: string) =>
-    api<{ user: User; token: string }>("/auth/register", {
-      method: "POST",
-      body: JSON.stringify({ username, email, password }),
-      token: null,
-    }),
-  login: (email: string, password: string) =>
-    api<{ user: User; token: string }>("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      token: null,
-    }),
-  me: () => api<{ user: User }>("/auth/me"),
-};
-
 // Scryfall card shape (subset we use)
 export type RandomCard = {
   name: string;
@@ -81,8 +57,17 @@ export const cards = {
 export type CommanderCard = {
   id: string;
   name: string;
+  oracle_text?: string;
+  layout?: string;
+  colors?: string[];
+  color_identity?: string[];
   image_uris?: { normal: string; small: string };
-  card_faces?: Array<{ image_uris?: { normal: string; small: string } }>;
+  card_faces?: Array<{
+    name?: string;
+    oracle_text?: string;
+    colors?: string[];
+    image_uris?: { normal: string; small: string };
+  }>;
 };
 
 export type RandomCommandersBody = {
