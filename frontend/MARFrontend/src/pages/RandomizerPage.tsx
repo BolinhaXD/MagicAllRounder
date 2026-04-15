@@ -46,6 +46,7 @@ function orderedColors(colors: string[]): string[] {
 
 function commanderColorSymbolUrl(color: string): string | null {
   // Files live in `frontend/MARFrontend/public` and are served from the site root.
+  const base = import.meta.env.BASE_URL;
   const map: Record<string, string> = {
     W: "white",
     U: "blue",
@@ -55,7 +56,7 @@ function commanderColorSymbolUrl(color: string): string | null {
     C: "colorless",
   };
   const family = map[color];
-  return family ? `/${family}-symbol.png` : null;
+  return family ? `${base}${family}-symbol.png` : null;
 }
 
 function isFlippableNonAdventure(c: CommanderCard): boolean {
@@ -355,7 +356,7 @@ export default function RandomizerPage() {
                         ) : (
                           <span className="commander-result-colorless" title="Colorless">
                             <img
-                              src="/colorless-symbol.png"
+                              src={`${import.meta.env.BASE_URL}colorless-symbol.png`}
                               alt=""
                               aria-hidden="true"
                               className="color-identity-symbol"

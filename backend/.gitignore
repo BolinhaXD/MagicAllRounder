@@ -9,10 +9,8 @@ node_modules
 # Build
 dist
 
-# Prisma
-/generated/prisma
+# Local DB files
 *.db
-prisma/dev.db
 
 # Logs
 logs
