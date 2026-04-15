@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import { GITHUB_URL, LINKEDIN_URL } from "../siteLinks";
 import "../pages/Pages.css";
 import "./Layout.css";
 
@@ -33,7 +34,19 @@ export default function Layout({ children }: LayoutProps) {
             </svg>
           </div>
           <footer>
-            <p><strong>Magic All Rounder</strong> — deck builder & randomizer</p>
+            <div className="footer-inner">
+              <p className="footer-tagline">
+                <strong>Magic All Rounder</strong> - Commander Randomizer
+              </p>
+              <div className="footer-social">
+                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="footer-social-link">
+                  GitHub
+                </a>
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="footer-social-link">
+                  LinkedIn
+                </a>
+              </div>
+            </div>
           </footer>
         </div>
       </div>

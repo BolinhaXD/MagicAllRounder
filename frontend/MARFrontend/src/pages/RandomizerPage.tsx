@@ -39,12 +39,6 @@ function commanderColorIdentity(c: CommanderCard): string[] {
   return Array.isArray(colors) ? colors : [];
 }
 
-function formatColorIdentity(colors: string[]): string {
-  if (!colors.length) return "Colorless";
-  const order = ["W", "U", "B", "R", "G"];
-  return [...colors].sort((a, b) => order.indexOf(a) - order.indexOf(b)).join("");
-}
-
 function orderedColors(colors: string[]): string[] {
   const order = ["W", "U", "B", "R", "G"];
   return [...colors].sort((a, b) => order.indexOf(a) - order.indexOf(b));
@@ -126,10 +120,25 @@ export default function RandomizerPage() {
     }
   };
 
+  const handleReset = () => {
+    setCmc("");
+    setPower("");
+    setToughness("");
+    setNumberCommanders(1);
+    setColors([]);
+    setIncludingColors("exactly");
+    setError(null);
+    setResult(null);
+    setFlippedById({});
+  };
+
   return (
     <Layout>
       <div className="main-content random-commander-page">
         <h1 className="random-commander-title">Random Commander</h1>
+        <p className="random-commander-subtitle">
+          Filter by stats and color identity to discover commanders, then build a deck from one click.
+        </p>
         {error && <p className="auth-error random-commander-error">{error}</p>}
 
         <form id="commanderForm" className="commander-form" onSubmit={handleSubmit}>
@@ -188,7 +197,7 @@ export default function RandomizerPage() {
               <option value="including">Identity includes these colors</option>
             </select>
             <span className="commander-form-field-label" id="colors-label">
-              Color identity
+              Colors
             </span>
             <div
               className="color-filter color-filter--pentagon"
@@ -276,6 +285,14 @@ export default function RandomizerPage() {
             <button type="submit" className="btn btn-primary btn-block commander-submit" disabled={loading}>
               {loading ? "Loading…" : "Get commanders"}
             </button>
+            <button
+              type="button"
+              className="btn btn-block commander-reset"
+              onClick={handleReset}
+              disabled={loading}
+            >
+              Reset
+            </button>
           </div>
         </form>
 
@@ -298,14 +315,12 @@ export default function RandomizerPage() {
                   const isBack = Boolean(flippedById[c.id]);
                   const hoverSrc = canFlip ? (isBack ? backSrc : frontSrc) : frontSrc;
 
-                  const displayOracle =
-                    canFlip && (oracleText || backOracle)
-                      ? `${name}${oracleText ? `\n${oracleText}` : ""}${
-                          backName || backOracle
-                            ? `\n\n${backName || "Back"}${backOracle ? `\n${backOracle}` : ""}`
-                            : ""
-                        }`
-                      : oracleText;
+                  const hasSecondFaceText = Boolean(backName || backOracle);
+                  const displayOracle = hasSecondFaceText
+                    ? `${name}${oracleText ? `\n${oracleText}` : ""}\n\n${
+                        backName || "Back"
+                      }${backOracle ? `\n${backOracle}` : ""}`
+                    : oracleText;
 
                   return (
                     <div key={c.id} className="commander-result-card">

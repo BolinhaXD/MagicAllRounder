@@ -16,11 +16,12 @@
   --border: rgba(229, 242, 201, 0.18);
   --border-strong: rgba(229, 242, 201, 0.28);
   --border-btn: rgba(229, 242, 201, 0.4);
-  --accent: #c9a89e;
-  --accent-hover: #e8c4b8;
-  --accent-subtle: rgba(201, 168, 158, 0.28);
-  --accent-button: #b07d72;
-  --accent-button-hover: #c99588;
+  /* Mint–sage accent: reads clean on purple + cream, no peach/orange cast */
+  --accent: #8ecfb0;
+  --accent-hover: #b5e8d4;
+  --accent-subtle: rgba(142, 207, 176, 0.28);
+  --accent-button: #4d9078;
+  --accent-button-hover: #62a890;
   --error: #c45c5c;
   --error-bg: rgba(157, 115, 107, 0.22);
   --btn-bg: #3a363a;
@@ -39,10 +40,20 @@
 a {
   font-weight: 500;
   color: var(--accent);
-  text-decoration: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.15s ease;
+  transform-origin: center;
 }
+
 a:hover {
   color: var(--accent-hover);
+  transform: scale(1.06);
+}
+
+/* Logo link: keep stable (no text zoom on image) */
+a.nav-brand,
+a.nav-brand:hover {
+  transform: none;
 }
 
 body {
@@ -65,10 +76,13 @@ button {
   font-family: inherit;
   background-color: var(--btn-bg);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, transform 0.15s ease;
+  transform-origin: center;
 }
-button:hover {
+
+button:hover:not(:disabled):not(.commander-flip-btn) {
   border-color: var(--accent);
+  transform: scale(1.04);
 }
 button:focus,
 button:focus-visible {
